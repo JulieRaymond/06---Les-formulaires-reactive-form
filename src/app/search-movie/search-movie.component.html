@@ -1,0 +1,53 @@
+<h1>Challenge quete reactive form 06</h1>
+
+<form
+  #formSearchMovie="ngForm"
+  [formGroup]="searchMovieForm"
+  (ngSubmit)="searchMovieForm.valid && onSubmit()"
+>
+  <div formGroupName="idAndTitle">
+    <div>
+      <label for="id">Identifiant : </label>
+      <input type="number" formControlName="id" name="id" />
+    </div>
+    <div>
+      <label for="title">Titre : </label>
+      <input type="text" formControlName="title" name="title" />
+    </div>
+    <div *ngIf="idAndTitle.errors && formSearchMovie.submitted">
+      <span *ngIf="idAndTitle.errors?.['missing']"
+        >Veuillez saisir au moins le titre ou l'identifiant</span
+      >
+    </div>
+  </div>
+
+  <div>
+    <label for="type">Type : </label>
+    <select formControlName="type" name="type">
+      <option value="film">Film</option>
+      <option value="serie">Série</option>
+      <option value="episode">Episode</option>
+    </select>
+  </div>
+  <div>
+    <label for="year">Année de sortie : </label>
+    <input type="number" formControlName="year" name="year" />
+    <div
+      *ngIf="searchMovieForm.controls.year.errors && formSearchMovie.submitted"
+    >
+      <span *ngIf="searchMovieForm.controls.year.errors?.['minMax']"
+        >L'année doit être comprise entre 1900 et {{ thisYear }}
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="idAndTitle.get('id')?.value">
+    <label for="fiche">Type : </label>
+    <select formControlName="fiche" name="fiche">
+      <option value="complete">Complète</option>
+      <option value="courte">courte</option>
+    </select>
+  </div>
+
+  <button type="submit">Envoyer</button>
+</form>
